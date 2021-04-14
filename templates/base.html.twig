@@ -2,11 +2,574 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {{ encore_entry_link_tags('app') }}
     </head>
+            <style>
+                /* ----------------------------- Import fonts from google font ----------------------------- */
+                @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:wght@200;300;400;500;700;900&family=Open+Sans:wght@300;400;600;700;800&family=Roboto:wght@300;400;700;900&display=swap');
+                /* -------------------- Global classes -------------------- */
+                :root{
+                    --bar-height: 55px;
+                    --footer-height: 415.33px;
+                    --color-green: #009579;
+                    --color-green-glossy: #0affd2;
+                    --primary-gradient: linear-gradient(to right, #4e4376, #2b5876);
+                    --OpenSans: 'Open Sans', sans-serif;
+                    --Montserrat: 'Montserrat', sans-serif;
+                    --Lobster: 'Lobster', sans-serif;
+                    --Roboto: 'Roboto', sans-serif;
+                }
+                *{
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                    box-sizing: border-box;
+                }
+                body{
+                    overflow-x: hidden;
+                    position: relative;
+                }
+                a:hover{
+                    text-decoration: none;
+                }
+                /* ----------x--------- Global classes ----------x--------- */
+                /* ---------------------------- header ---------------------------- */
+                header{
+                    font-family: var(--Roboto);
+                    top: 0;
+                    left: 0;
+                    /*position: fixed;*/
+                    width: 100%;
+                    text-transform: uppercase;
+                    background-color: transparent;
+                    padding: 16px 32px 16px 32px;
+                    box-shadow: 0 1px 16px rgba(0, 0, 0, 0.9);
+                    z-index: 100;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .sticky{
+                    background-color: #222222;
+                    box-shadow: none;
+                    z-index: 20;
+                    transition: 0.4s ease-in-out;
+                }
+                nav ul{
+                    margin: 0;
+                    padding: 0;
+                    transform: translateY(50%);
+                }
+                nav, nav li{
+                    display: inline-block;
+                }
+                header img{
+                    width: 100px;
+                    margin: 0;
+                    padding: 0;
+                }
+                header a{
+                    outline: none;
+                }
+                nav{
+                    display: inline-block;
+                    /* line-height: 35px; */
+                    vertical-align: top;
+                }
+                nav li{
+                    margin-left: 25px;
+                }
+                nav li a{
+                    text-decoration: none;
+                    color: #ffffff;
+                }
+                nav li a:hover{
+                    opacity: 0.6;
+                    color: #ffffff;
+                }
+                .button-sign-in{
+                    text-decoration: none;
+                    color: #ffffff;
+                    float: right;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                }
+                .button-sign-in:hover{
+                    color: #ffffff;
+                    opacity: 0.6;
+                    transition: all ease-in-out 150ms;
+                }
+                #hamburger, #hamburger-content{
+                    display: inline;
+                }
+                #hamburger-content a{
+                    align-items: center;
+                    text-align: center;
+                    justify-content: center;
+                    margin-top: 4px;
+                }
+                #hamburger-content .fa-user-circle{
+                    font-size: 35px;
+                    padding: 0;
+                    margin: 0;
+                }
+                #hamburger-button{
+                    display: none;
+                    background: none;
+                    color: #ffffff;
+                    border: none;
+                    font-size: 30px;
+                    padding: 0;
+                    margin: 0;
+                    float: right;
+                    cursor: pointer;
+                    outline-style: none;
+                }
+                #hamburger-button:hover{
+                    opacity: 0.6;
+                    transition: all ease-in-out 200ms;
+                }
+                #hamburger-overlay{
+                    display: none; /* Masquer l'affichage */
+                    position: fixed;
+                    z-index: 10;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.6);
+                }
+                #hamburger-sidebar{
+                    display: none;
+                    position: fixed;
+                    width: 84%;
+                    z-index: 20;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    background: #fdbd12;
+                    transform: translateX(-100%);
+                    transition: transform 0.2s ease-out;
+                }
+                #hamburger-sidebar li{
+                    display: block;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }
+                #hamburger-sidebar-header{
+                    background: url('evenement/build/images/NavImg.jpg') no-repeat center;
+                    height: 430px;
+                    background-size: cover;
+                }
+                #hamburger-sidebar-body{
+                    padding: 16px 8px;
+                }
+                #hamburger-sidebar-body li:before{
+                    content: ' ';
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 26px;
+                    height: 26px;
+                    /* border: 1px solid red; */
+                    margin-right: 16px;
+                }
+                #hamburger-sidebar-body li:first-child:before{
+                    background-image: url('evenement/build/images/home.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                }
+                #hamburger-sidebar-body li:nth-child(2):before{
+                    background-image: url('evenement/build/images/info.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                }
+                #hamburger-sidebar-body li:nth-child(3):before{
+                    background-image: url('evenement/build/images/event.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                }#hamburger-sidebar-body li:last-child:before{
+                    background-image: url('evenement/build/images/email.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: cover;
+                 }
+                 #hamburger-sidebar-body .button{
+                     float: none;
+                     display: block;
+                     text-align: center;
+                     margin-top: 16px;
+                     height: auto;
+                     font-size: 32px;
+                     line-height: inherit;
+                 }
+                #hamburger-sidebar-body .button:after{
+                    content: 'Se connecter';
+                    display: inline-block;
+                    vertical-align: middle;
+                    font-size: 16px;
+                    /* border: 1px solid red; */
+                    margin-left: 16px;
+                }
+
+                @media screen and (max-width: 1024px){
+                    #hamburger-content{
+                        display: none;
+                    }
+                    #hamburger-button, #hamburger-sidebar,
+                    .hamburger-activated #hamburger-overlay{
+                        display: block;
+                    }
+                    .hamburger-activated #hamburger-sidebar{
+                        transform: translateX(0);
+                    }
+                }
+                /* --------------x------------- header --------------x------------- */
+                /* ------------------------ footer ------------------------ */
+                footer{
+                    font-family: var(--Montserrat);
+                    font-size: 13px;
+                    background: #222222;
+                    /*background-blend-mode: multiply;*/
+                    padding: 30px;
+                    width: 100%;
+                    z-index: 100;
+                }
+                footer .footer_menu{
+                    max-width: 900px;
+                    width: 100%;
+                    display: flex;
+                    margin: 0 auto 20px;
+                    justify-content: space-between;
+                }
+                footer .footer_menu ul{
+                    list-style-type: none;
+                }
+                footer .footer_menu .title{
+                    margin-bottom: 10px;
+                    color: #ffffff;
+                    font-weight: 600;
+                }
+                footer .footer_menu ul li a{
+                    display: block;
+                    margin-bottom: 6px;
+                    color: #ffffff;
+                    outline: none;
+                }
+                footer .footer_menu ul li a:hover{
+                    opacity: 0.6;
+                }
+                footer .partners ul{
+                    list-style-type: none;
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    margin-bottom: 20px;
+                }
+                footer .partners ul a{
+                    outline: none;
+                }
+                footer .partners ul li a img{
+                    width: 200px;
+                    display: block;
+                    margin: 0 30px;
+                }
+                footer .social_media ul{
+                    list-style-type: none;
+                }
+                footer .social_media{
+                    text-align: center;
+                }
+                footer .social_media ul{
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                }
+                footer .social_media ul li a{
+                    display: block;
+                    margin: 0 5px;
+                    color: #ffffff;
+                    font-size: 30px;
+                    width: 50px;
+                    height: 50px;
+                    outline: none;
+                }
+                footer .social_media ul li a.facebook:hover{
+                    color: #1877f2;
+                }
+                .facebook i {
+                    padding: 10px;
+                    /* text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6); */
+                    transition: all ease-in-out 150ms;
+                }
+                .facebook i:hover {
+                    margin-top: -3px;
+                    text-shadow: 0 14px 10px rgba(0, 0, 0, 0.4);
+                }
+                footer .social_media ul li a.instagram:hover{
+                    color: transparent;
+                    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+                    background: -webkit-radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+                    -webkit-background-clip: text;
+                }
+                .instagram i {
+                    padding: 10px;
+                    /* text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6); */
+                    transition: all ease-in-out 150ms;
+                }
+                .instagram i:hover {
+                    margin-top: -3px;
+                    text-shadow: 0 14px 10px rgba(0, 0, 0, 0.4);
+                }
+                footer .social_media ul li a.twitter:hover{
+                    color: #1da1f2;
+                }
+                .twitter i {
+                    padding: 10px;
+                    /* text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6); */
+                    transition: all ease-in-out 150ms;
+                }
+                .twitter i:hover {
+                    margin-top: -3px;
+                    text-shadow: 0 14px 10px rgba(0, 0, 0, 0.4);
+                }
+                footer .social_media ul li a.whatsapp:hover{
+                    color: #00e676;
+                }
+                .whatsapp i {
+                    padding: 10px;
+                    /* text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6); */
+                    transition: all ease-in-out 150ms;
+                }
+                .whatsapp i:hover {
+                    margin-top: -3px;
+                    text-shadow: 0 14px 10px rgba(0, 0, 0, 0.4);
+                }
+                footer .social_media ul li a.linkedin:hover{
+                    color: #0a66c2;
+                }
+                .linkedin i {
+                    padding: 10px;
+                    /* text-shadow: 0 6px 8px rgba(0, 0, 0, 0.6); */
+                    transition: all ease-in-out 150ms;
+                }
+                .linkedin i:hover {
+                    margin-top: -3px;
+                    text-shadow: 0 14px 10px rgba(0, 0, 0, 0.4);
+                }
+                footer .copyright{
+                    background: #fdbd12;
+                    /* box-shadow: 0 1px 16px rgba(0, 0, 0, 0.9); */
+                    color: #ffffff;
+                    font-weight: 500;
+                    height: 30px;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                }
+                footer .copyright p{
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+                @media (max-width: 767px){
+                    footer .footer_menu{
+                        flex-direction: column;
+                        width: 320px;
+                        margin: 0 auto 25px;
+                    }
+                    footer .footer_menu > div{
+                        margin: 10px 70px;
+                    }
+                    footer .partners ul li a{
+                        margin: 5px;
+                    }
+                }
+                /* -----------x------------ footer ------------x----------- */
+
+            </style>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    {#
+    <!-- ---------------------------------- header ---------------------------------- -->
+    <header>
+        <a href="{{ path('home') }}">
+            <img src="{{ asset('build/images/RisLogo1.png') }}" alt="Logo">
+        </a>
+        <div id="hamburger">
+            <div id="hamburger-content">
+                <nav>
+                    <ul>
+                        <li><a href="{{ path('home') }}">Accueil</a></li>
+                        <li><a href="#">A propos</a></li>
+                        <li><a href="{{ path('evenements') }}">Evenements</a></li>
+                        <li><a href="{{ path('contact') }}">Contact</a></li>
+                    </ul>
+                </nav>
+                <a class="button-sign-in" href="{{ path('app_login') }}"><i class="fas fa-user-circle"></i></a>
+            </div>
+            <button id="hamburger-button"><i class="fas fa-bars"></i></button>
+            <div id="hamburger-sidebar">
+                <div id="hamburger-sidebar-header"></div>
+                <div id="hamburger-sidebar-body"></div>
+            </div>
+            <div id="hamburger-overlay"></div>
+        </div>
+    </header>
+    <!-- -----------------x---------------- header -----------------x---------------- -->
+    <!-- --------------------------- footer --------------------------- -->
+    <footer>
+        <div class="footer_menu">
+            <div class="col_1">
+                <div class="title">
+                    Ris CrossFit
+                </div>
+                <ul>
+                    <li><a href="{{ path('home') }}">Accueil</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="{{ path('evenements') }}">Evenements</a></li>
+                    <li><a href="{{ path('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col_2">
+                <div class="title">
+                    Help & Support
+                </div>
+                <ul>
+                    <li><a href="#">Support Center</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Call Center</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="col_3">
+                <div class="title">
+                    Services
+                </div>
+                <ul>
+                    <li><a href="#">Business Consultancy</a></li>
+                    <li><a href="#">Digital Marketing</a></li>
+                    <li><a href="#">Market Analysis</a></li>
+                    <li><a href="#">Web Development</a></li>
+                </ul>
+            </div>
+            <div class="col_4">
+                <div class="title">
+                    Solutions
+                </div>
+                <ul>
+                    <li><a href="#">Facilities Services</a></li>
+                    <li><a href="#">Workplace Staffing</a></li>
+                    <li><a href="#">Project Management</a></li>
+                    <li><a href="#">Wordpress Management</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="partners">
+            <ul>
+                <li>
+                    <a class="partner1" href="https://www.redbull.com/fr-fr/" target="_blank">
+                        <img src="{{ asset('build/images/RedBull.png') }}" style="margin-top: 30px;">
+                    </a>
+                </li>
+                <li>
+                    <a class="partner2" href="https://www.nike.com/fr/" target="_blank">
+                        <img src="{{ asset('build/images/WNike.png') }}" style="margin-top: 5px;">
+                    </a>
+                </li>
+                <li>
+                    <a class="partner3" href="https://www.reebok.fr/" target="_blank">
+                        <img src="{{ asset('build/images/Reebok.png') }}" style="margin-top: 38px;">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="social_media">
+            <ul>
+                <li><a class="facebook" href="https://www.facebook.com/" target="_blank">
+                        <i class="fab fa-facebook-square"></i></a></li>
+                <li><a class="instagram" href="https://www.instagram.com/" target="_blank">
+                        <i class="fab fa-instagram"></i></a></li>
+                <li><a class="twitter" href="https://twitter.com/?lang=fr" target="_blank">
+                        <i class="fab fa-twitter"></i></a></li>
+                <li><a class="whatsapp" href="tel:+33603941673">
+                        <i class="fab fa-whatsapp"></i></a></li>
+                <li><a class="linkedin" href="https://www.linkedin.com/in/matine-nassirpour-01ba831a6/" target="_blank">
+                        <i class="fab fa-linkedin"></i></a></li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <p>
+            &copy; Matine
+            <script>document.write(new Date().getFullYear())</script>
+            </p>
+        </div>
+    </footer>
+    <!-- ------------x-------------- footer -------------x------------- -->
+    #}
+
+{% block body %}{% endblock %}
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!-- ------------ Font Awesome CDN ------------ -->
+        <script src="https://kit.fontawesome.com/30428b0ab5.js" crossorigin="anonymous"></script>
+        <!-- ----------------------------- Scroll Header ----------------------------- -->
+        <script>
+            window.addEventListener("scroll", function(){
+               var header = document.querySelector("header");
+               header.classList.toggle("sticky", window.scrollY > 0);
+            });
+        </script>
+        <!-- -------------x--------------- Scroll Header -------------x--------------- -->
+        <!-- ----------------------------- navbar ----------------------------- -->
+        <script>
+            var content = document.querySelector('#hamburger-content');
+            var sidebarBody = document.querySelector('#hamburger-sidebar-body');
+            var button = document.querySelector('#hamburger-button');
+            var overlay = document.querySelector('#hamburger-overlay');
+            var activatedClass = 'hamburger-activated';
+
+            sidebarBody.innerHTML = content.innerHTML;
+
+            button.addEventListener('click', function(e){
+                e.preventDefault();
+                this.parentNode.classList.add(activatedClass);
+            });
+
+            button.addEventListener('keydown', function(e){
+                if(this.parentNode.classList.contains(activatedClass))
+                {
+                    if(e.repeat === false && e.which === 27)
+                        this.parentNode.classList.remove(activatedClass);
+                }
+            });
+
+            overlay.addEventListener('click', function(e){
+                e.preventDefault();
+                this.parentNode.classList.remove(activatedClass);
+            });
+        </script>
+        <!-- -------------x--------------- navbar --------------x-------------- -->
+        {{ encore_entry_script_tags('app') }}
+
+        <script>
+            $(function() {
+                // you may need to change this code if you are not using Bootstrap Datepicker
+                $('.js-datepicker').datepicker({
+                    format: 'dd/MM/YYYY'
+                });
+            });
+        </script>
+
     </body>
 </html>

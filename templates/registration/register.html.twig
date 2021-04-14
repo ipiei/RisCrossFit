@@ -1,0 +1,52 @@
+
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    {# {{ dump() }} #}
+
+
+    {{ form_start(registrationForm, {'action': path('app_register'), 'method': 'POST', 'attr': {'class': 'sign-up-form'}}) }}
+
+    <h2 class="title">Prêt à nous rejoindre</h2>
+    <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input type="text" placeholder="Nom" id="{{ registrationForm.nom.vars.id}}" name="{{ registrationForm.nom.vars.full_name }}" value="{{ registrationForm.nom.vars.value }}" required>
+    </div>
+    <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input type="text" placeholder="Prénom" id="{{ registrationForm.prenom.vars.id }}" name="{{ registrationForm.prenom.vars.full_name }}" value="{{ registrationForm.prenom.vars.value }}" required>
+    </div>
+    <div class="input-field">
+        <i class="fas fa-envelope"></i>
+        <input type="email" placeholder="Mail" id="{{ registrationForm.email.vars.id }}" name="{{ registrationForm.email.vars.full_name }}" value="{{ registrationForm.email.vars.value }}" required>
+    </div>
+    <div class="input-field">
+        <i class="fas fa-lock"></i>
+        <input type="password" placeholder="Mot de passe" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="{{ registrationForm.plainPassword.vars.id }}" name="{{ registrationForm.plainPassword.vars.full_name }}" value="{{ registrationForm.plainPassword.vars.value }}" required>
+    </div>
+    <label for="{{ registrationForm.agreeTerms.vars.id }}"><input type="checkbox" id="{{ registrationForm.agreeTerms.vars.id }}" name="{{ registrationForm.agreeTerms.vars.full_name }}" value="{{ registrationForm.agreeTerms.vars.value }}" required> Accepter les conditions</label>
+    <input class="btn solid" type="submit" value="Inscription">
+    <p class="social-text">Ou s'inscrire avec les plateformes sociales</p>
+    <div class="social-media">
+        <a href="https://www.facebook.com/" target="_blank" class="social-icon facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://twitter.com/" target="_blank" class="social-icon twitter">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.google.com/" target="_blank" class="social-icon google">
+            <i class="fab fa-google"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/matine-nassirpour-01ba831a6/" target="_blank" class="social-icon linkedin">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+    </div>
+
+    {% do registrationForm.nom.setRendered %}
+    {% do registrationForm.prenom.setRendered %}
+    {% do registrationForm.email.setRendered %}
+    {% do registrationForm.plainPassword.setRendered %}
+    {% do registrationForm.agreeTerms.setRendered %}
+
+    {{ form_end(registrationForm) }}

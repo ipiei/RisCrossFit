@@ -1,0 +1,18 @@
+<h1>Bienvenue chez Ris CrossFit</h1>
+
+<p>
+    Veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous: <br><br>
+    <a href="{{ signedUrl|raw }}">Confirmer mon email</a>.
+    Ce lien expirera dans {{ expiresAt|date('g') }} heure(s).
+</p>
+
+<p>
+    Bon courage!
+</p>
+
+<style>
+    a{
+        text-decoration: none;
+        color: #1877f2;
+    }
+</style>

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Assister{% endblock %}
+
+{% block body %}
+    <h1>Edit Assister</h1>
+
+    {{ include('assister/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('assister_index') }}">back to list</a>
+
+    {{ include('assister/_delete_form.html.twig') }}
+{% endblock %}
